@@ -1,5 +1,5 @@
 import { MatListModule } from '@angular/material/list';
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { CommonModule } from '@angular/common';
@@ -22,16 +22,18 @@ import {Person } from '../../../types/person';
     FormsModule,
     CommonModule,
     ProfileThumbnail
-],
+  ],
+  changeDetection: ChangeDetectionStrategy.Default,
   providers: [CommentService]
 })
 
 export class MentionsComponent {
+  @Input() inputOpen: boolean = false;
   selectedPerson?: Person
-  readonly separatorKeysCodes = [ENTER, COMMA] as const;
+  readonly separatorKeysCodes = [ENTER, COMMA] as const
   mentionList = PERSONS
   text?: string
-  typeAheadActive?: boolean = false;
+  typeAheadActive?: boolean = false
   matches?: Person[] = []
   constructor(private commentService: CommentService) {}
 
@@ -43,16 +45,16 @@ export class MentionsComponent {
   }
 
   onInputChange(event: Event) {
-    const element = event.target as HTMLInputElement;
+    const element = event.target as HTMLInputElement
 
     if (element?.value?.startsWith("@")) {
-      this.typeAheadActive = true;
-      this.matches = this.mentionList;
+      this.typeAheadActive = true
+      this.matches = this.mentionList
     } else {
-      this.typeAheadActive = false;
-      this.matches = [];
+      this.typeAheadActive = false
+      this.matches = []
     }
-    this.text = element?.value;
+    this.text = element?.value
     this.filterList(element.value)
   }
 
@@ -66,7 +68,7 @@ export class MentionsComponent {
     this.selectedPerson = this.mentionList.find(f => f.userID === id)
     this.text = `@${this.selectedPerson?.name} `
     document.querySelector("input")?.focus()
-    this.typeAheadActive = false;
-    this.matches = [];
+    this.typeAheadActive = false
+    this.matches = []
   }
 }

@@ -12,7 +12,7 @@
     }
   </mat-list>
 </div>
-<form autocomplete="off" (ngSubmit)="onSubmit()">
+<form *ngIf="inputOpen" autocomplete="off" (ngSubmit)="onSubmit()">
   <input name="comment" [(ngModel)]="text" (input)="onInputChange($event)">
 </form>
 
