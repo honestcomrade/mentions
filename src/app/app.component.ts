@@ -21,6 +21,10 @@ export class AppComponent {
   comments: Comment[] = COMMENT_LIST
   inputOpen: boolean = false;
 
+  commentAdded(comment: Comment) {
+    this.comments.push(comment)
+  }
+
   toggleInput() {
     this.inputOpen = !this.inputOpen
     setTimeout(() => {

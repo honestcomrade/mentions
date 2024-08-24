@@ -12,12 +12,15 @@
     }
   </mat-list>
 </div>
-<form *ngIf="inputOpen" autocomplete="off" (ngSubmit)="onSubmit()">
+<form class="comment-input-form" *ngIf="inputOpen" autocomplete="off" (ngSubmit)="onSubmit()">
   <input class="comment-input" name="comment" [(ngModel)]="text" (input)="onInputChange($event)">
 </form>
 
 <style>
-  input { 
+  .comment-input-form {
+    margin-top: 10px;
+  }
+  .comment-input {
     width: 100%;
   }
   .inline-list {

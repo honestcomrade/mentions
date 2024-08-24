@@ -54,7 +54,7 @@
         <mat-icon fontIcon="chat_bubble"/> 
         Add Comment
       </button>
-      <mention class="mention-outer" [inputOpen]="inputOpen"></mention>
+      <mention class="mention-outer" (commentAdded)="commentAdded($event)" [inputOpen]="inputOpen"></mention>
     <!-- </div> -->
   </div>
 </main>

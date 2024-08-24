@@ -1,5 +1,5 @@
 import { MatListModule } from '@angular/material/list';
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { CommonModule } from '@angular/common';
@@ -9,6 +9,7 @@ import { CommentService } from '../../../services/comment.service';
 import { ProfileThumbnail } from "../../shared/profile/profile-thumbnail.component";
 import { PERSONS } from '../../../data/person-list';
 import {Person } from '../../../types/person';
+import {Comment }from '../../../types/comment';
 
 /**
  * @title Mention List Container
@@ -35,6 +36,8 @@ export class MentionsComponent {
   text?: string
   typeAheadActive?: boolean = false
   matches?: Person[] = []
+  @Output() commentAdded = new EventEmitter<Comment>();
+
   constructor(private commentService: CommentService) {}
 
   filterList(text: string) {
@@ -59,9 +62,16 @@ export class MentionsComponent {
   }
 
   onSubmit() {
-    if(this.selectedPerson) {
+    if(this.selectedPerson?.userID) {
       this.commentService.notify(this.selectedPerson, this.text ?? "")
+      const now = new Date().getTime()
+
+      this.commentAdded.emit({text: this.text ?? "", authorID: this.selectedPerson?.userID, timestampms: now})
     }
+    // todo: emit pushing a new comment in
+  
+    // this would also be handled by the service in ideal world
+    this.text = ""
   }
 
   selectPerson(id: number) {
