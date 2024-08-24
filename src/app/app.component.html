@@ -19,15 +19,21 @@
   .content {
     width: 100%;
   }
+
+  .input-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    margin: auto;
+  }
 </style>
 
 <main class="main">
   <div class="content">
     <comments [comments]="comments"></comments>
-    <div>
-
+    <div class="input-container">
       <mention [inputOpen]="inputOpen"></mention>
-      <button (click)="toggleInput()" mat-raised-button>
+      <button (click)="toggleInput()" mat-raised-button color="primary">
         <mat-icon fontIcon="chat_bubble"/> 
         Add Comment
       </button>

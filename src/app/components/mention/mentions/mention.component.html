@@ -1,4 +1,4 @@
-<div *ngIf="typeAheadActive">
+<div *ngIf="typeAheadActive" class="typeahead">
   <mat-list role="list">
     @for (person of matches; track person.userID) {
       <mat-list-item role="listitem" 
@@ -13,13 +13,21 @@
   </mat-list>
 </div>
 <form *ngIf="inputOpen" autocomplete="off" (ngSubmit)="onSubmit()">
-  <input name="comment" [(ngModel)]="text" (input)="onInputChange($event)">
+  <input class="comment-input" name="comment" [(ngModel)]="text" (input)="onInputChange($event)">
 </form>
 
 <style>
   .inline-list {
     display: flex;
     flex-direction: row;
+  }
+  .typeahead {
+    margin-top: 20px;
+    position-anchor: --typeahead;
+    position: fixed;
+  }
+  .comment-input {
+    anchor-name: --typeahead
   }
 </style>
 
