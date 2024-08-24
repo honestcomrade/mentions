@@ -4,10 +4,10 @@
       <mat-list-item role="listitem" 
       (click)="selectPerson(person.userID)"
       >
-      <div class="inline-list">
-        <profile-thumbnail [imageUrl]="person.avatarUrl" /> 
-        {{person.name}}
-      </div>
+        <div class="inline-list">
+          <profile-thumbnail [imageUrl]="person.avatarUrl" /> 
+          {{person.name}}
+        </div>
       </mat-list-item>
     }
   </mat-list>
@@ -17,11 +17,15 @@
 </form>
 
 <style>
+  input { 
+    width: 100%;
+  }
   .inline-list {
     display: flex;
     flex-direction: row;
   }
   .typeahead {
+    /* flex: 1 1 80%; */
     margin-top: 20px;
     position-anchor: --typeahead;
     position: fixed;

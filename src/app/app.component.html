@@ -23,8 +23,12 @@
   .input-container {
     display: flex;
     flex-direction: row;
-    justify-content: flex-end;
+    justify-content: space-between;
     margin: auto;
+  }
+
+  .mention-outer {
+    flex: 1 1 75%;
   }
 </style>
 
@@ -32,7 +36,7 @@
   <div class="content">
     <comments [comments]="comments"></comments>
     <div class="input-container">
-      <mention [inputOpen]="inputOpen"></mention>
+      <mention class="mention-outer" [inputOpen]="inputOpen"></mention>
       <button (click)="toggleInput()" mat-raised-button color="primary">
         <mat-icon fontIcon="chat_bubble"/> 
         Add Comment
