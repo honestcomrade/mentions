@@ -23,5 +23,8 @@ export class AppComponent {
 
   toggleInput() {
     this.inputOpen = !this.inputOpen
+    setTimeout(() => {
+      document.querySelector("input")?.focus()
+    }, 100)
   }
 }

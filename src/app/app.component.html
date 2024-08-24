@@ -30,18 +30,32 @@
   .mention-outer {
     flex: 1 1 75%;
   }
+
+  button {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: row;
+    border-radius: 4px;
+    padding: 4px 10px;
+    width: 140px;
+    color: black;
+    border: none;
+    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+    cursor: pointer;
+  }
 </style>
 
 <main class="main">
   <div class="content">
     <comments [comments]="comments"></comments>
-    <div class="input-container">
-      <mention class="mention-outer" [inputOpen]="inputOpen"></mention>
-      <button (click)="toggleInput()" mat-raised-button color="primary">
+    <!-- <div class="input-container"> -->
+      <button (click)="toggleInput()">
         <mat-icon fontIcon="chat_bubble"/> 
         Add Comment
       </button>
-    </div>
+      <mention class="mention-outer" [inputOpen]="inputOpen"></mention>
+    <!-- </div> -->
   </div>
 </main>
 
