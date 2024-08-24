@@ -1,0 +1,31 @@
+<style>
+  main {
+    border: 1px solid white;
+    width: 100%;
+    min-height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+    box-sizing: inherit;
+    position: relative;
+  }
+
+  .angular-logo {
+    max-width: 9.2rem;
+  }
+
+  .content {
+    width: 100%;
+  }
+
+</style>
+
+<main class="main">
+  <div class="content">
+    <comments [comments]="comments"></comments>
+    <mention></mention>
+  </div>
+</main>
+
+<router-outlet />

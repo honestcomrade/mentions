@@ -1,0 +1,51 @@
+<div *ngIf="typeAheadActive">
+  <mat-list role="list">
+    @for (person of matches; track person.userID) {
+      <mat-list-item role="listitem" 
+      (click)="selectPerson(person.userID)"
+      >
+      <div class="inline-list">
+        <profile-thumbnail [imageUrl]="person.avatarUrl" /> 
+        {{person.name}}
+      </div>
+      </mat-list-item>
+    }
+  </mat-list>
+</div>
+<form autocomplete="off" (ngSubmit)="onSubmit()">
+  <input name="comment" [(ngModel)]="text" (input)="onInputChange($event)">
+</form>
+
+<style>
+  .inline-list {
+    display: flex;
+    flex-direction: row;
+  }
+</style>
+
+<!-- 
+
+The Build:
+Build a simple Angular (latest) app that has this functionality:
+  - A list of comments
+  - A field that can allow people to add new comments
+  - The field should be able to detect when you type in someone's name starting with an @, similar to the example in Slack. 
+Here is a static set of users:
+[
+  {'userID' : 1, 'name' : 'Kevin'},
+  {'userID' : 2, 'name' : 'Jeff'},
+  {'userID' : 3, 'name' : 'Bryan'},
+  {'userID' : 4, 'name' : 'Gabbey'},
+]
+
+When the entry is entered, it needs to detect which user was typed in and trigger a 
+JavaScript function that alerts the person who is tagged.
+
+The primary purpose of this project is to get the detect @user portion ready to port 
+into our comment feature, so don't worry about things like persistence. 
+
+You should make the styling of the dropdown and tagging of users look and function well, 
+as that is what is being ported over. There is only one rule:
+don't use a library that provides this functionality; we want to see how you write it. 
+
+-->
