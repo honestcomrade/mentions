@@ -49,13 +49,11 @@
 <main class="main">
   <div class="content">
     <comments [comments]="comments"></comments>
-    <!-- <div class="input-container"> -->
       <button (click)="toggleInput()">
-        <mat-icon fontIcon="chat_bubble"/> 
+        <mat-icon fontIcon="add_comment"/> 
         Add Comment
       </button>
       <mention class="mention-outer" (commentAdded)="commentAdded($event)" [inputOpen]="inputOpen"></mention>
-    <!-- </div> -->
   </div>
 </main>
 
