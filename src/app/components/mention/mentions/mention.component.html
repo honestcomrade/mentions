@@ -1,3 +1,6 @@
+<div>{{typeAheadActive}}</div>
+<div>{{matches | json}}</div>
+<div>{{partial}}</div>
 <div *ngIf="typeAheadActive" class="typeahead">
   <mat-list role="list">
     @for (person of matches; track person.userID) {
@@ -16,8 +19,6 @@
   <input class="comment-input" name="comment" [(ngModel)]="text" (input)="onInputChange($event)">
 </form>
 
-<!-- <div>{{mentions | json}}</div> -->
-<!-- <div>{{partial}}</div> -->
 
 <style>
   .comment-input-form {

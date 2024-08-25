@@ -29,10 +29,9 @@ import { Comment }from '../../../types/comment';
 export class MentionsComponent {
   @Input() inputOpen: boolean = false;
   @Output() commentAdded = new EventEmitter<Comment>();
-  selectedPerson?: Person
+  personList = PERSONS
   mentions: Person[] = []
-  mentionList = PERSONS
-  text?: string
+  text: string = ""
   typeAheadActive?: boolean = false
   matches?: Person[] = []
   partial: string = ""
@@ -40,24 +39,25 @@ export class MentionsComponent {
   @HostListener('window:keypress', ['$event'])
   keyEvent(event: KeyboardEvent) {
     if(event.key == '@'){
-      this.matches = this.mentionList
+      this.matches = this.personList
+      debugger;
       this.typeAheadActive = true;
-      console.log(event.key);
-      this.partial = "@"
-    } else {
+      // console.log(event.key);
+      // this.partial = "@"
+    } /* else {
       const pattern = /^[a-zA-Z0-9]*$/;   
       const inputChar = String.fromCharCode(Number(event.key));
   
       if (!pattern.test(inputChar)) {
         this.partial += event.key
       }
-    }
+    } */
   }
   
   updateMentions() {
     // keeps the mentions list in sync with the input text, in case some chars were deleted
     this.mentions = this.mentions?.filter(mention => {
-      return this.text?.includes(mention.name)
+      return this.text.includes(mention.name)
     });
   }
   
@@ -92,7 +92,7 @@ export class MentionsComponent {
   }
 
   selectPerson(id: number) {
-    const matchingPerson = this.mentionList.find(f => f.userID === id)
+    const matchingPerson = this.personList.find(f => f.userID === id)
     if (matchingPerson) {
       this.mentions.push(matchingPerson)
       // TODO: to support multiple mentions, need to crawl back and replace only the partial text with the matches name
