@@ -11,6 +11,7 @@ export class CommentService {
   notify(user: Person, commentText: string) {
     // this is meant to mock the functionality of notifying a user
     // used a service to keep the implementation detials abstract from the caller
-    alert(`Please notify ${JSON.stringify(user)}. Message: ${commentText}`)
+
+    alert(`A notification has been sent to the following user: ${JSON.stringify(user)}. Comment contents: ${commentText}`)
   }
 }
