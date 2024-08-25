@@ -4,5 +4,5 @@ export interface Comment {
   commentID?: number
   timestampms: number
   text: string
-  mention?: Person
+  mentions?: Person[]
 }

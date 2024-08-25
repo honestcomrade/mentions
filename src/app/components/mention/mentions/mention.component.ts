@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, HostListener, Input, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MatListModule } from '@angular/material/list';
@@ -30,10 +30,37 @@ export class MentionsComponent {
   @Input() inputOpen: boolean = false;
   @Output() commentAdded = new EventEmitter<Comment>();
   selectedPerson?: Person
+  mentions: Person[] = []
   mentionList = PERSONS
   text?: string
   typeAheadActive?: boolean = false
   matches?: Person[] = []
+  partial: string = ""
+  
+  @HostListener('window:keypress', ['$event'])
+  keyEvent(event: KeyboardEvent) {
+    if(event.key == '@'){
+      this.matches = this.mentionList
+      this.typeAheadActive = true;
+      console.log(event.key);
+      this.partial = "@"
+    } else {
+      const pattern = /^[a-zA-Z0-9]*$/;   
+      const inputChar = String.fromCharCode(Number(event.key));
+  
+      if (!pattern.test(inputChar)) {
+        this.partial += event.key
+      }
+    }
+    this.updateMentions()
+  }
+
+  updateMentions() {
+    // keeps the mentions list in sync with the input text, in case some chars were deleted
+    this.mentions = this.mentions?.filter(mention => {
+      return this.text?.includes(mention.name)
+    });
+  }
 
   constructor(private commentService: CommentService) {}
 
@@ -46,39 +73,36 @@ export class MentionsComponent {
   onInputChange(event: Event) {
     const element = event.target as HTMLInputElement
 
-    // limitation, only allows for @mentions at beginning of input text
-    if (element?.value?.startsWith("@")) {
-      this.typeAheadActive = true
-      this.matches = this.mentionList
-    } else {
-      this.typeAheadActive = false
-      this.matches = []
-    }
     this.text = element?.value
     this.filterList(element.value)
-    // handle partial deletion of tagged user after they were tagged
-    if (this.selectedPerson) {
-      if(!element.value?.includes(this.selectedPerson?.name)) {
-        this.selectedPerson = undefined
-      }
-    }
+  
   }
 
   onSubmit() {
-    if(this.selectedPerson?.userID) {
-      this.commentService.notify(this.selectedPerson, this.text ?? "")
+    if(this.mentions?.length > 0) {
+      this.commentService.notify(this.mentions, this.text ?? "")
     }
     const now = new Date().getTime()
-    this.commentAdded.emit({text: this.text ?? "", mention: this.selectedPerson, timestampms: now})
+    this.commentAdded.emit({text: this.text ?? "", mentions: this.mentions, timestampms: now})
     this.text = ""
-    this.selectedPerson = undefined
+    this.mentions = []
+  }
+
+  replacePartialMatch(str: string, partial: string, full: string) {
+    const regex = new RegExp(partial, 'g');
+    return str.replace(regex, full);
   }
 
   selectPerson(id: number) {
-    this.selectedPerson = this.mentionList.find(f => f.userID === id)
-    this.text = `@${this.selectedPerson?.name} `
-    document.querySelector("input")?.focus()
-    this.typeAheadActive = false
-    this.matches = []
+    const matchingPerson = this.mentionList.find(f => f.userID === id)
+    if (matchingPerson) {
+      this.mentions.push(matchingPerson)
+      // TODO: to support multiple mentions, need to crawl back and replace only the partial text with the matches name
+      // this.replacePartialMatch()
+      this.text = `@${matchingPerson?.name} `
+      document.querySelector("input")?.focus()
+      this.typeAheadActive = false
+      this.matches = []
+    }
   }
 }
