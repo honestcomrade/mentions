@@ -27,6 +27,7 @@ export class AppComponent {
     const copy = { ...comment }
     if (comment.mentions && comment.mentions?.length > 0) {
       copy.text = markupCommentText(copy)
+      copy.commentID = this.comments.length+1
     }
     this.comments.push(copy)
   }
