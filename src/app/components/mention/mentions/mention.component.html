@@ -1,6 +1,3 @@
-<!-- <div>{{typeAheadActive}}</div> -->
-<!-- <div>{{matches | json}}</div> -->
-<!-- <div>{{partial}}</div> -->
 <div *ngIf="typeAheadActive" class="typeahead">
   <mat-list role="list">
     @for (person of matches; track person.userID) {
@@ -18,7 +15,6 @@
 <form class="comment-input-form" *ngIf="inputOpen" autocomplete="off" (ngSubmit)="onSubmit()">
   <input class="comment-input" name="comment" [(ngModel)]="text" (input)="onInputChange($event)">
 </form>
-
 
 <style>
   .comment-input-form {
