@@ -52,18 +52,17 @@ export class MentionsComponent {
         this.partial += event.key
       }
     }
-    this.updateMentions()
   }
-
+  
   updateMentions() {
     // keeps the mentions list in sync with the input text, in case some chars were deleted
     this.mentions = this.mentions?.filter(mention => {
       return this.text?.includes(mention.name)
     });
   }
-
+  
   constructor(private commentService: CommentService) {}
-
+  
   filterList(text: string) {
     const word = text.substring(1) // ignore the @ character
     const matches = this.matches?.filter(f => stringMatcher(f.name, word))
@@ -72,10 +71,9 @@ export class MentionsComponent {
 
   onInputChange(event: Event) {
     const element = event.target as HTMLInputElement
-
     this.text = element?.value
     this.filterList(element.value)
-  
+    this.updateMentions()
   }
 
   onSubmit() {
