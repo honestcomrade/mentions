@@ -12,7 +12,7 @@ export const COMMENT_LIST: Comment[] = [
   { 
     commentID: 1, 
     text: "This Task was assigned to Daryl Babb", 
-    timestampms: 1724346166000,
+    timestampms: 1724246166000,
     mentions: [PERSONS[0]]
   },
   { 

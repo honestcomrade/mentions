@@ -9,6 +9,7 @@ import { ProfileThumbnail } from "../../shared/profile/profile-thumbnail.compone
 import { PERSONS } from '../../../data/person-list';
 import { Person } from '../../../types/person';
 import { Comment }from '../../../types/comment';
+import { CharacterEnums } from '../../../constants/CharacterEnums';
 
 /**
  * @title Mention List Container
@@ -38,20 +39,17 @@ export class MentionsComponent {
   
   @HostListener('window:keypress', ['$event'])
   keyEvent(event: KeyboardEvent) {
-    if(event.key == '@'){
+    if(event.key === CharacterEnums.AtSymbol) {
       this.matches = this.personList
-      debugger;
       this.typeAheadActive = true;
-      // console.log(event.key);
-      // this.partial = "@"
-    } /* else {
+      this.partial = this.text.substring(this.text.length)
+    } else {
       const pattern = /^[a-zA-Z0-9]*$/;   
       const inputChar = String.fromCharCode(Number(event.key));
-  
       if (!pattern.test(inputChar)) {
         this.partial += event.key
       }
-    } */
+    }
   }
   
   updateMentions() {
@@ -65,7 +63,7 @@ export class MentionsComponent {
   
   filterList(text: string) {
     const word = text.substring(1) // ignore the @ character
-    const matches = this.matches?.filter(f => stringMatcher(f.name, word))
+    const matches = this.matches?.filter(match => stringMatcher(match.name, word))
     this.matches = matches
   }
 
@@ -86,18 +84,17 @@ export class MentionsComponent {
     this.mentions = []
   }
 
-  replacePartialMatch(str: string, partial: string, full: string) {
-    const regex = new RegExp(partial, 'g');
-    return str.replace(regex, full);
+  replacePartialMatch(fullStr: string, partial: string, replacementValue: string): string {
+    // crawl back and replace only the partial text with the matches name
+    const regex = new RegExp(partial);
+    return `${fullStr.replace(regex, replacementValue)}${CharacterEnums.WhiteSpace}`; // add a single whitesspace char like Slack
   }
 
   selectPerson(id: number) {
     const matchingPerson = this.personList.find(f => f.userID === id)
     if (matchingPerson) {
       this.mentions.push(matchingPerson)
-      // TODO: to support multiple mentions, need to crawl back and replace only the partial text with the matches name
-      // this.replacePartialMatch()
-      this.text = `@${matchingPerson?.name} `
+      this.text = this.replacePartialMatch(this.text, this.partial, matchingPerson.name)
       document.querySelector("input")?.focus()
       this.typeAheadActive = false
       this.matches = []
